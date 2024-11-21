@@ -38,11 +38,9 @@ public class TextProcessor {
 //        Metoden replaceAll tar bort alla blanksteg från teckenräknaren
         charCount += textRow.replaceAll(" ", "").length();
 
-//        Här tar vi även bort specialtecken innan ord och ordlängd räknas, men efter att tecken och rader räknats.
-        String noSpecialChar = textRow.replaceAll("[^\\p{L}0-9- ]", "");
-
-//        Här delas textraden upp vid varje blanksteg och orden lagras var för sig i en String-array
-        String[] wordArray = (noSpecialChar.split(" "));
+//        Här kallar vi på vår hjälpmetod removeSpecialChar, som dels tar bort specialtecknen och dels returnerar en
+//        array med orden, uppdelade vid varje mellanslag.
+        String[] wordArray = removeSpecialChar(textRow);
 
 //        Loop för att gå igenom alla ord i wordArray.
 //        Kom ihåg for each från programmering 1, och jag tycker den är i särklass bäst för att gå
@@ -58,6 +56,11 @@ public class TextProcessor {
                 }
             }
         }
+    }
+
+//    hjälpmetod för att ta bort specialtecken, dela upp raden vid banksteg, och returnera en StringArray.
+    public String []removeSpecialChar(String text) {
+        return text.replaceAll("[^\\p{L}0-9- ]", "").split(" ");
     }
 
 //    hjälpmetod för att ta bort bindestreck vid jämförelsen av ordlängder
