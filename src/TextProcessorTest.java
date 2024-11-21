@@ -6,10 +6,11 @@ public class TextProcessorTest {
 
     @Test
     void testRowCount() {
-//        Jag testar metoden getRowCount för en rad, samtidigt som jag ser så att mina tomma rader inte räknas.
+//        Jag testar så att mina tomma rader inte räknas.
         TextProcessor processor = new TextProcessor();
-        processor.processText("\n\n\nDethär gick ju ganska bra!");
-        assertEquals(1, processor.getRowCount());
+        processor.processText("\n  ");
+        assertEquals(0, processor.getRowCount());
+        assertEquals(0, processor.getCharCount());
     }
 
     @Test
@@ -44,7 +45,8 @@ public class TextProcessorTest {
     }
 
     @Test
-    void testStopIgnoresUpperCase() {
+    void testIfStopIgnoresUpperCase() {
+//        Testar så att min ignore upper case fungerar för ifStop.
         TextProcessor processor = new TextProcessor();
         processor.processText("STOP");
         assertTrue(processor.ifStop());
@@ -83,4 +85,5 @@ public class TextProcessorTest {
 //Jag har funderat på huruvida jag borde ha kvar vissa tecken inuti ord när jag beräknar ordlängd, exempelvis en epost-adress.
 //Jag bestämde mig för att om jag hade jobbat på det här systemet så är det något jag skulle gå till en kollega och fråga.
 //Beroende på hur vi skulle välja att tolka kraven, så hade jag eventuellt fått ändra på replaceAll. Jag har hittat lösningar,
-//men kände att det började bli lite väl komplext och långsökt.
+//men kände att det började bli lite väl komplext och långsökt. Jag har även valt att inte trimma pga vi ju skulle räkna
+//mellanslag, och jag tyckte att de kunde få vara med så länge de står tillsammans med andra tecken.
