@@ -78,6 +78,22 @@ public class TextProcessorTest {
     }
 
     @Test
+    void testRemoveHyphenFromLongestWord() {
+//        testar så att longestWord räknar bort bindestreck
+        TextProcessor processor = new TextProcessor();
+        processor.processText("Här är min e-post, skriv till mig senare");
+        assertEquals("senare", processor.getLongestWord());
+    }
+
+    @Test
+    void testWordWithHyphen() {
+//        testar så att bindestrecket håller ihop orden och sparas i longestWord
+        TextProcessor processor = new TextProcessor();
+        processor.processText("Håller binde-streck ihop långorden?");
+        assertEquals("binde-streck", processor.getLongestWord());
+    }
+
+    @Test
     void testOnlySpecialChar() {
 //        testar så att specialtecken räknas som tecken, men inte som ord.
 //        Detta testet failade från början pga en felplacering av både wordCount och replaceAll-metoden. Så jag fick tänka om.

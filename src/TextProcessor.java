@@ -5,7 +5,8 @@
 //Jag vill att raden med stop ska räknas oavsett mellanslag och bokstavsstorlek.
 //Jag valde att bara ta med det första ordet i longestWord om det finns två ord som är lika långa.
 //Jag valde att inte räkna med mellanslagen i charCount.
-//Jag vill inte räkna med specialtecken (förutom bindestreck) i ordlängden.
+//Jag vill inte räkna med specialtecken i ordlängden, däremot vill jag spara ord med bindestreck i som ett ord.
+//Dock ska bindestrecket inte räknas med i ordlängden - e-post ska vara ett ord, med längden 5.
 //Jag vill dock räkna med utländska bokstäver i ordlängden.
 //Jag vill inte räkna "ord" med endast specialtecken i wordCount.
 //Jag har funderat på huruvida jag borde ha kvar vissa tecken inuti ord när jag beräknar ordlängd, exempelvis en epost-adress.
@@ -49,14 +50,21 @@ public class TextProcessor {
         for  (String word : wordArray) {
 //            En konsekvens av att ta bort specialtecknen innan blev att två mellanslag ibland hamnar bredvid varandra,
 //            och då skapas en split med en tom String i wordArray. Logiken nedan ser till att dessa räknas bort.
-            if (!word.isBlank()) {
+//            Eftersom bindestreck är kvar, tas även "ord" innehållande endast bindestreck bort innan wordCount.
+            if (!word.isBlank() && !word.matches("-+")) {
                 wordCount++;
-                if (longestWord.length() < word.length()) {
+                if (removeHyphen(longestWord).length() < removeHyphen(word).length()) {
                 longestWord = word;
                 }
             }
         }
     }
+
+//    hjälpmetod för att ta bort bindestreck vid jämförelsen av ordlängder
+    public String removeHyphen(String text) {
+        return text.replaceAll("-", "");
+    }
+
 //    hasStopped() är till för att kontrollera om stop skrivits in från main-metoden.
 //    Den returnerar värdet på isStop. Skrivs stop in, sätts isStop till true.
     public boolean hasStopped() {
