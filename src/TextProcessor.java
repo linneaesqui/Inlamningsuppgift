@@ -1,45 +1,53 @@
+//Jag har lagt ner mycket tid på att tolka och testa. Testa olika gränsvärden och se vad som händer. Kraven var ganska
+//diffusa och jag valde att försöka göra ett program jag kunde känna mig nöjd med.
+//Saker jag lagt till/tolkat:
+//Jag vill inte räkna med tomma rader och rader med endast mellanslag.
+//Jag vill att redan med stop ska räknas oavsett mellanslag och bokstavsstorlek
+//Jag valde att bara ta med det första ordet i longestWord om det finns två ord som är lika långa.
+//Jag valde att inte räkna med mellanslagen i charCount.
+//Jag vill inte räkna med specialtecken (förutom bindestreck) i ordlängden.
+//Jag vill inte räkna "ord" med endast specialtecken i wordCount.
+//Jag har funderat på huruvida jag borde ha kvar vissa tecken inuti ord när jag beräknar ordlängd, exempelvis en epost-adress.
+//Jag bestämde mig för att om jag hade jobbat på det här systemet så är det något jag skulle gå till en kollega och fråga.
+//Beroende på hur vi skulle välja att tolka kraven, så hade jag eventuellt fått ändra på replaceAll. Jag har hittat lösningar,
+//men kände att det började bli lite väl komplext och långsökt.
+
 public class TextProcessor {
-//    Här nedan radar jag upp alla egenskaper jag vill att mina objekt ska ha. Eftersom vi inte vill ändra dem utanför klassen,
+//    Här nedan radas alla egenskaper objektet ska ha upp. Eftersom de inte ska ändras från utanför klassen,
 //    samt att alla objekt ska ha samma defaultvärden när de skapas, och konstruktorn inte ska läsa in några parametrar,
-//    valde jag att initiera instansvariablerna direkt som private. Ingen konstruktor alltså.
+//    initieras instansvariablerna direkt som private. Ingen konstruktor behövs.
     private int rowCount = 0;
     private int charCount = 0;
     private int wordCount = 0;
     private String longestWord = "";
 
-//    Efter många om och men så insåg jag till slut att jag skulle lägga till en boolean,
-//    så jag kan returnera true eller false till min main-metod, så att den fattar när den ska sluta.
+//    boolean isStop som kan returneras till main-metoden och tala om när programmet ska sluta.
     private boolean isStop = false;
 
     public void processText(String textRow) {
-        if (textRow.isBlank()) //Jag vill inte bearbeta tomma rader och rader helt utan tecken.
+        if (textRow.isBlank()) //metoden processText ska inte bearbeta tomma rader och rader helt utan tecken.
             return;
-        if (textRow.equalsIgnoreCase("stop")) { //kontrollerar om användaren skrivit stop enligt anvisningarna
-            isStop = true; //i så fall sätts vår boolean isStop till true
-            return; //och vi avslutar metoden
+        if (textRow.trim().equalsIgnoreCase("stop")) { //kontrollerar om användaren skrivit stop enligt anvisningarna
+            isStop = true; //i så fall sätts isStop till true
+            return; //och metoden avslutas
         }
 
         rowCount++;
-        charCount += textRow.length();
+//        Metoden replaceAll tar bort alla blanksteg från teckenräknaren
+        charCount += textRow.replaceAll(" ", "").length();
 
-//        Eftersom det ofta ingår olika skiljetecken i en löpande text, fick jag gräva lite efter en enkel metod för
-//        att ta bort dessa.
-//        Jag tycker inte att det blev snyggt när det längsta ordet hade ett kommatecken vid sig, och det skulle
-//        också kunna bli fel, eftersom att ett ord blir ett tecken längre med ett skiljetecken. Jag fann denhär som
-//        hade samma princip (regex) som split-metoden du lärde oss, och tyckte det var passande. Genom placeringen i koden
-//        tar jag även bort skiljetecken som står för sig, så de inte kommer med i wordCount. Det enda jag inte
-//        lyckats lösa är hur jag ska kunna urskilja bindestreck inuti ett ord från bindestreck intill ett ord.
+//        Här tar vi även bort specialtecken innan ord och ordlängd räknas, men efter att tecken och rader räknats
         String noSpecialChar = textRow.replaceAll("[^a-zA-ZåäöÅÄÖ0-9- ]", "");
 
-//        Jag delar upp min textrad vid varje blanksteg och lagrar orden var för sig i en string-array.
+//        Här delas textraden upp vid varje blanksteg och orden lagras var för sig i en String-array
         String[] wordArray = (noSpecialChar.split(" "));
 
-//        Jag har valt en for each-loop för att gå igenom alla ord i min wordArray.
-//        Detta är en loop som jag minns från programmering 1, och jag tycker den är i särklass bäst för att gå
+//        Loop för att gå igenom alla ord i wordArray.
+//        Kom ihåg for each från programmering 1, och jag tycker den är i särklass bäst för att gå
 //        igenom och jämföra alla värden sparade i en Array.
         for  (String word : wordArray) {
-//            En konsekvens av att jag tog bort specialtecknen innan blev att två mellanslag ibland hamnar bredvid varandra,
-//            och då skapas en split med ett tomt index i min Array. Jag räknar nedan endast ord som inte är "blank".
+//            En konsekvens av att ta bort specialtecknen innan blev att två mellanslag ibland hamnar bredvid varandra,
+//            och då skapas en split med en tom String i wordArray. Logiken nedan ser till att dessa räknas bort.
             if (!word.isBlank()) {
                 wordCount++;
                 if (longestWord.length() < word.length()) {
@@ -48,13 +56,12 @@ public class TextProcessor {
             }
         }
     }
-//    Min boolean-metod är till för att vi ska kunna kontrollera om stop skrivits in från main-metoden.
-//    Den returnerar värdet på min boolean isStop. Skrivs stop in, sätts isStop till true och vi returnerar
-//    detta till main-metoden, där vi genom en if-sats kontrollerar värdet och eventuellt avslutar while-loopen.
+//    ifStop() är till för att kontrollera om stop skrivits in från main-metoden.
+//    Den returnerar värdet på isStop. Skrivs stop in, sätts isStop till true.
     public boolean ifStop() {
         return isStop;
     }
-//    Nedan är alla get-metoder som ska kunna returnera värdena för våra egenskaper/variabler.
+//    Nedan är alla get-metoder som ska kunna returnera värdena för instansvariablerna.
     public int getWordCount() {
         return wordCount;
     }
