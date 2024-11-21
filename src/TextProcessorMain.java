@@ -12,11 +12,11 @@ public class TextProcessorMain {
                 "För att avsluta programmet, skriv stop. \nObs att stop ska skrivas på en egen rad!");
         while (keepGoing) { //Jag skapar en while-loop för att läsa in och bearbeta rad för rad.
             myProcessor.processText(scan.nextLine()); //varje rad som läses in, bearbetas i vår processText-metod.
-            if (myProcessor.ifStop()) { //Om ifStop returnerar true...
+            if (myProcessor.hasStopped()) { //Om hasStopped returnerar true...
                 keepGoing = false; //...sätts keepGoing till false och vi avslutar vår loop.
             }
         }
-        //här nedan hämtar vi och skriver ut våra lagrade värden med hjälp av våra get-metoder.
+        //här nedan hämtas och skrivs de lagrade värdena ut, med hjälp av våra get-metoder.
         System.out.println("Antal rader: " + myProcessor.getRowCount());
         System.out.println("Antal tecken: " + myProcessor.getCharCount());
         System.out.println("Antal ord: " + myProcessor.getWordCount());

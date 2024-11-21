@@ -2,10 +2,11 @@
 //diffusa och jag valde att försöka göra ett program jag kunde känna mig nöjd med.
 //Saker jag lagt till/tolkat:
 //Jag vill inte räkna med tomma rader och rader med endast mellanslag.
-//Jag vill att redan med stop ska räknas oavsett mellanslag och bokstavsstorlek
+//Jag vill att raden med stop ska räknas oavsett mellanslag och bokstavsstorlek.
 //Jag valde att bara ta med det första ordet i longestWord om det finns två ord som är lika långa.
 //Jag valde att inte räkna med mellanslagen i charCount.
 //Jag vill inte räkna med specialtecken (förutom bindestreck) i ordlängden.
+//Jag vill dock räkna med utländska bokstäver i ordlängden.
 //Jag vill inte räkna "ord" med endast specialtecken i wordCount.
 //Jag har funderat på huruvida jag borde ha kvar vissa tecken inuti ord när jag beräknar ordlängd, exempelvis en epost-adress.
 //Jag bestämde mig för att om jag hade jobbat på det här systemet så är det något jag skulle gå till en kollega och fråga.
@@ -36,8 +37,8 @@ public class TextProcessor {
 //        Metoden replaceAll tar bort alla blanksteg från teckenräknaren
         charCount += textRow.replaceAll(" ", "").length();
 
-//        Här tar vi även bort specialtecken innan ord och ordlängd räknas, men efter att tecken och rader räknats
-        String noSpecialChar = textRow.replaceAll("[^a-zA-ZåäöÅÄÖ0-9- ]", "");
+//        Här tar vi även bort specialtecken innan ord och ordlängd räknas, men efter att tecken och rader räknats.
+        String noSpecialChar = textRow.replaceAll("[^\\p{L}0-9- ]", "");
 
 //        Här delas textraden upp vid varje blanksteg och orden lagras var för sig i en String-array
         String[] wordArray = (noSpecialChar.split(" "));
@@ -56,9 +57,9 @@ public class TextProcessor {
             }
         }
     }
-//    ifStop() är till för att kontrollera om stop skrivits in från main-metoden.
+//    hasStopped() är till för att kontrollera om stop skrivits in från main-metoden.
 //    Den returnerar värdet på isStop. Skrivs stop in, sätts isStop till true.
-    public boolean ifStop() {
+    public boolean hasStopped() {
         return isStop;
     }
 //    Nedan är alla get-metoder som ska kunna returnera värdena för instansvariablerna.

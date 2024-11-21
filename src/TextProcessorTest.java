@@ -46,7 +46,7 @@ public class TextProcessorTest {
 //        testar så att boolean-metoden verkligen returnerar ett falskt värde om stop inte skrivs på egen rad
         TextProcessor processor = new TextProcessor();
         processor.processText("Hej, jag heter Linnea stop");
-        assertFalse(processor.ifStop()); //Tydligare metod för att kolla boolska värden än assertEquals()
+        assertFalse(processor.hasStopped()); //Tydligare metod för att kolla boolska värden än assertEquals()
     }
 
     @Test
@@ -58,15 +58,23 @@ public class TextProcessorTest {
         assertEquals(0, processor.getRowCount());
         assertEquals(0, processor.getCharCount());
         assertEquals("", processor.getLongestWord());
-        assertTrue(processor.ifStop());
+        assertTrue(processor.hasStopped());
     }
 
     @Test
-    void testIfStopIgnoresUpperCase() {
-//        testar så att ignoreUpperCase() fungerar för ifStop.
+    void testHasStoppedIgnoresUpperCase() {
+//        testar så att ignoreUpperCase() fungerar för hasStopped().
         TextProcessor processor = new TextProcessor();
         processor.processText("STOP");
-        assertTrue(processor.ifStop());
+        assertTrue(processor.hasStopped());
+    }
+
+    @Test
+    void testForeignLetters() {
+//        testar en förnyad version av replaceAll, där även utländska bokstäver ska räknas
+        TextProcessor processor = new TextProcessor();
+        processor.processText("Linnéa Muños Crème Øl");
+        assertEquals(18, processor.getCharCount());
     }
 
     @Test
