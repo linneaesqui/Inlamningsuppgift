@@ -35,11 +35,11 @@ public class TextProcessor {
         }
 
         rowCount++;
-//        Metoden replaceAll tar bort alla blanksteg från teckenräknaren
-        charCount += textRow.replaceAll(" ", "").length();
+//        Hjälpmetoden removeSpace, som returnerar en Sting utan mellanslag, anropas.
+        charCount += removeSpace(textRow);
 
-//        Här kallar vi på vår hjälpmetod removeSpecialChar, som dels tar bort specialtecknen och dels returnerar en
-//        array med orden, uppdelade vid varje mellanslag.
+//        Hjälpmetoden removeSpecialChar, som tar bort specialtecken, delar upp en String vid varje mellanslag,
+//        och returnerar en StringArray, anropas.
         String[] wordArray = removeSpecialChar(textRow);
 
 //        Loop för att gå igenom alla ord i wordArray.
@@ -51,6 +51,8 @@ public class TextProcessor {
 //            Eftersom bindestreck är kvar, tas även "ord" innehållande endast bindestreck bort innan wordCount.
             if (!word.isBlank() && !word.matches("-+")) {
                 wordCount++;
+//                Hjälpmetoden removeHyphen, som returnerar en String utan bindestreck, anropas för korrekt jämförelse av
+//                ordlängd.
                 if (removeHyphen(longestWord).length() < removeHyphen(word).length()) {
                 longestWord = word;
                 }
@@ -58,12 +60,14 @@ public class TextProcessor {
         }
     }
 
-//    hjälpmetod för att ta bort specialtecken, dela upp raden vid banksteg, och returnera en StringArray.
+    public int removeSpace(String text) {
+        return text.replaceAll(" ", "").length();
+    }
+
     public String []removeSpecialChar(String text) {
         return text.replaceAll("[^\\p{L}0-9- ]", "").split(" ");
     }
 
-//    hjälpmetod för att ta bort bindestreck vid jämförelsen av ordlängder
     public String removeHyphen(String text) {
         return text.replaceAll("-", "");
     }
