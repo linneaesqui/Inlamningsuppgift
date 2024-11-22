@@ -94,6 +94,15 @@ public class TextProcessorTest {
     }
 
     @Test
+    void testOnlyHyphen() {
+//        testar så bara bindestreck inte räknas som ord, men räknas som tecken
+        TextProcessor processor = new TextProcessor();
+        processor.processText("----");
+        assertEquals(0, processor.getWordCount());
+        assertEquals(4, processor.getCharCount());
+    }
+
+    @Test
     void testOnlySpecialChar() {
 //        testar så att specialtecken räknas som tecken, men inte som ord.
 //        Detta testet failade från början pga en felplacering av både wordCount och replaceAll-metoden. Så jag fick tänka om.

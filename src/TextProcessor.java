@@ -35,11 +35,11 @@ public class TextProcessor {
         }
 
         rowCount++;
-//        Hjälpmetoden removeSpace, som returnerar en Sting utan mellanslag, anropas.
+//        Hjälpmetoden removeSpace, som returnerar en String utan mellanslag, anropas.
         charCount += removeSpace(textRow);
 
 //        Hjälpmetoden removeSpecialChar, som tar bort specialtecken, delar upp en String vid varje mellanslag,
-//        och returnerar en StringArray, anropas.
+//        och returnerar en StringArray med orden i, anropas.
         String[] wordArray = removeSpecialChar(textRow);
 
 //        Loop för att gå igenom alla ord i wordArray.
@@ -47,7 +47,7 @@ public class TextProcessor {
 //        igenom och jämföra alla värden sparade i en Array.
         for  (String word : wordArray) {
 //            En konsekvens av att ta bort specialtecknen innan blev att två mellanslag ibland hamnar bredvid varandra,
-//            och då skapas en split med en tom String i wordArray. Logiken nedan ser till att dessa räknas bort.
+//            och då skapas en split med en tom String i wordArray. Logiken nedan ser till att dessa inte räknas.
 //            Eftersom bindestreck är kvar, tas även "ord" innehållande endast bindestreck bort innan wordCount.
             if (!word.isBlank() && !word.matches("-+")) {
                 wordCount++;
@@ -59,7 +59,7 @@ public class TextProcessor {
             }
         }
     }
-
+//    Nedan är alla remove-metoder som skapats för att hålla koden renare och mer lätthanterlig.
     public int removeSpace(String text) {
         return text.replaceAll(" ", "").length();
     }
